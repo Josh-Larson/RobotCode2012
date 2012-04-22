@@ -9,6 +9,7 @@
 WIND_HOME := $(subst \,/,$(WIND_HOME))
 WIND_BASE := $(subst \,/,$(WIND_BASE))
 WIND_USR := $(subst \,/,$(WIND_USR))
+WRVX_COMPBASE := $(subst \,/,$(WRVX_COMPBASE))
 
 all : pre_build main_all post_build
 
@@ -31,8 +32,8 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-PRJ_ROOT_DIR := C:/WindRiver/workspace/SimpleTemplate
 WS_ROOT_DIR := C:/WindRiver/workspace
+PRJ_ROOT_DIR := $(WS_ROOT_DIR)/JDLRobot
 
 
 
@@ -48,191 +49,197 @@ CPU = PPC603
 TOOL_FAMILY = gnu
 TOOL = gnu
 TOOL_PATH = 
-CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
+CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp
 LIBPATH = 
 LIBS = 
 
-IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
+IDE_INCLUDES = -I$(WIND_BASE)/target/h/wrn/coreip -I$(WIND_BASE)/target/h -I$(WS_ROOT_DIR)/WPILib 
 
-IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
+IDE_LIBRARIES = 
+
+IDE_DEFINES = 
 
 
 
 #BuildTool flags
 ifeq ($(DEBUG_MODE),1)
+DEBUGFLAGS_C-Compiler = -g
+DEBUGFLAGS_C++-Compiler = -g
 DEBUGFLAGS_Linker = -g
 DEBUGFLAGS_Partial-Image-Linker = 
 DEBUGFLAGS_Librarian = 
 DEBUGFLAGS_Assembler = -g
-DEBUGFLAGS_C-Compiler = -g
-DEBUGFLAGS_C++-Compiler = -g
 else
+DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
 DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
 DEBUGFLAGS_Partial-Image-Linker = 
 DEBUGFLAGS_Librarian = 
 DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
-DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
 endif
 
 
 #Project Targets
-PROJECT_TARGETS = SimpleTemplate/$(MODE_DIR)/FRC_UserProgram.out \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o
+PROJECT_TARGETS = JDLRobot/$(MODE_DIR)/JDLRobot.out \
+	 JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage.o
 
 
 #Rules
 
-# SimpleTemplate
+# JDLRobot
 ifeq ($(DEBUG_MODE),1)
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+JDLRobot/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-SimpleTemplate/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
-SimpleTemplate/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-SimpleTemplate/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-SimpleTemplate/$(MODE_DIR)/% : DEFINES = 
-SimpleTemplate/$(MODE_DIR)/% : EXPAND_DBG = 0
-SimpleTemplate/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-SimpleTemplate/$(MODE_DIR)/% : CPU = PPC603
-SimpleTemplate/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-SimpleTemplate/$(MODE_DIR)/% : TOOL = gnu
-SimpleTemplate/$(MODE_DIR)/% : TOOL_PATH = 
-SimpleTemplate/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-SimpleTemplate/$(MODE_DIR)/% : LIBPATH = 
-SimpleTemplate/$(MODE_DIR)/% : LIBS = 
-SimpleTemplate/$(MODE_DIR)/% : OBJ_DIR := SimpleTemplate/$(MODE_DIR)
+JDLRobot/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/wrn/coreip -I$(WIND_BASE)/target/h -I$(WS_ROOT_DIR)/WPILib 
+JDLRobot/$(MODE_DIR)/% : IDE_LIBRARIES = 
+JDLRobot/$(MODE_DIR)/% : IDE_DEFINES = 
+JDLRobot/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+JDLRobot/$(MODE_DIR)/% : DEFINES = 
+JDLRobot/$(MODE_DIR)/% : EXPAND_DBG = 0
+JDLRobot/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+JDLRobot/$(MODE_DIR)/% : CPU = PPC603
+JDLRobot/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+JDLRobot/$(MODE_DIR)/% : TOOL = gnu
+JDLRobot/$(MODE_DIR)/% : TOOL_PATH = 
+JDLRobot/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp
+JDLRobot/$(MODE_DIR)/% : LIBPATH = 
+JDLRobot/$(MODE_DIR)/% : LIBS = 
+JDLRobot/$(MODE_DIR)/% : OBJ_DIR := JDLRobot/$(MODE_DIR)
 
-OBJECTS_SimpleTemplate = SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o
+OBJECTS_JDLRobot = JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage.o
 
-SimpleTemplate/$(MODE_DIR)/FRC_UserProgram.out : $(OBJECTS_SimpleTemplate)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_SimpleTemplate) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_SimpleTemplate) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
+JDLRobot/$(MODE_DIR)/JDLRobot.out : $(OBJECTS_JDLRobot)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_JDLRobot) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_JDLRobot) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-SimpleTemplate/$(MODE_DIR)/SimpleTemplate_compile_file : $(FILE) ;
+JDLRobot/$(MODE_DIR)/JDLRobot_compile_file : $(FILE) ;
 
-_clean :: SimpleTemplate/$(MODE_DIR)/SimpleTemplate_clean
+_clean :: JDLRobot/$(MODE_DIR)/JDLRobot_clean
 
-SimpleTemplate/$(MODE_DIR)/SimpleTemplate_clean : 
-	$(TRACE_FLAG)if [ -d "SimpleTemplate" ]; then cd "SimpleTemplate"; rm -rf $(MODE_DIR); fi
+JDLRobot/$(MODE_DIR)/JDLRobot_clean : 
+	$(TRACE_FLAG)if [ -d "JDLRobot" ]; then cd "JDLRobot"; rm -rf $(MODE_DIR); fi
 
 
-# SimpleTemplate_partialImage
+# JDLRobot_partialImage
 ifeq ($(DEBUG_MODE),1)
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+JDLRobot_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-SimpleTemplate_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h/wrn/coreip 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-SimpleTemplate_partialImage/$(MODE_DIR)/% : DEFINES = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
-SimpleTemplate_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-SimpleTemplate_partialImage/$(MODE_DIR)/% : CPU = PPC603
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL = gnu
-SimpleTemplate_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-SimpleTemplate_partialImage/$(MODE_DIR)/% : LIBPATH = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : LIBS = 
-SimpleTemplate_partialImage/$(MODE_DIR)/% : OBJ_DIR := SimpleTemplate_partialImage/$(MODE_DIR)
+JDLRobot_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/wrn/coreip -I$(WIND_BASE)/target/h -I$(WS_ROOT_DIR)/WPILib 
+JDLRobot_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = 
+JDLRobot_partialImage/$(MODE_DIR)/% : IDE_DEFINES = 
+JDLRobot_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+JDLRobot_partialImage/$(MODE_DIR)/% : DEFINES = 
+JDLRobot_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
+JDLRobot_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+JDLRobot_partialImage/$(MODE_DIR)/% : CPU = PPC603
+JDLRobot_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+JDLRobot_partialImage/$(MODE_DIR)/% : TOOL = gnu
+JDLRobot_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
+JDLRobot_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp
+JDLRobot_partialImage/$(MODE_DIR)/% : LIBPATH = 
+JDLRobot_partialImage/$(MODE_DIR)/% : LIBS = 
+JDLRobot_partialImage/$(MODE_DIR)/% : OBJ_DIR := JDLRobot_partialImage/$(MODE_DIR)
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Collector.o : C:/WindRiver/workspace/SimpleTemplate/Collector.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
-
-
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Display.o : C:/WindRiver/workspace/SimpleTemplate/Display.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Collector.o : $(PRJ_ROOT_DIR)/Collector.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/DriveTrain.o : C:/WindRiver/workspace/SimpleTemplate/DriveTrain.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Display.o : $(PRJ_ROOT_DIR)/Display.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/JoystickWrapper.o : C:/WindRiver/workspace/SimpleTemplate/JoystickWrapper.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/DriveTrain.o : $(PRJ_ROOT_DIR)/DriveTrain.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/LSM303_I2C.o : C:/WindRiver/workspace/SimpleTemplate/LSM303_I2C.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/JoystickWrapper.o : $(PRJ_ROOT_DIR)/JoystickWrapper.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Logger.o : C:/WindRiver/workspace/SimpleTemplate/Logger.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/LSM303_I2C.o : $(PRJ_ROOT_DIR)/LSM303_I2C.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Math.o : C:/WindRiver/workspace/SimpleTemplate/Math.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Logger.o : $(PRJ_ROOT_DIR)/Logger.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SharpIR.o : C:/WindRiver/workspace/SimpleTemplate/SharpIR.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Math.o : $(PRJ_ROOT_DIR)/Math.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Shooter.o : C:/WindRiver/workspace/SimpleTemplate/Shooter.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SharpIR.o : $(PRJ_ROOT_DIR)/SharpIR.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SquareFinder.o : C:/WindRiver/workspace/SimpleTemplate/SquareFinder.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Shooter.o : $(PRJ_ROOT_DIR)/Shooter.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.o : C:/WindRiver/workspace/SimpleTemplate/Vision.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SquareFinder.o : $(PRJ_ROOT_DIR)/SquareFinder.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/robot.o : C:/WindRiver/workspace/SimpleTemplate/robot.cpp
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi  -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Vision.o : $(PRJ_ROOT_DIR)/Vision.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-OBJECTS_SimpleTemplate_partialImage = SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Collector.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Display.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/DriveTrain.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/JoystickWrapper.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/LSM303_I2C.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Logger.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Math.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SharpIR.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Shooter.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SquareFinder.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.o \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/robot.o
+JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/robot.o : $(PRJ_ROOT_DIR)/robot.cpp $(FORCE_FILE_BUILD)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage.o : $(OBJECTS_SimpleTemplate_partialImage)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_SimpleTemplate_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_compile_file : $(FILE) ;
+OBJECTS_JDLRobot_partialImage = JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Collector.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Display.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/DriveTrain.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/JoystickWrapper.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/LSM303_I2C.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Logger.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Math.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SharpIR.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Shooter.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SquareFinder.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Vision.o \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/robot.o
 
-_clean :: SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_clean
+JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage.o : $(OBJECTS_JDLRobot_partialImage)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_JDLRobot_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-SimpleTemplate_partialImage/$(MODE_DIR)/SimpleTemplate_partialImage_clean : 
-	$(TRACE_FLAG)if [ -d "SimpleTemplate_partialImage" ]; then cd "SimpleTemplate_partialImage"; rm -rf $(MODE_DIR); fi
+JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage_compile_file : $(FILE) ;
 
-DEP_FILES := SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Collector.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Display.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/DriveTrain.d \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/JoystickWrapper.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/LSM303_I2C.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Logger.d \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Math.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SharpIR.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Shooter.d \
-	 SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/SquareFinder.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Vision.d SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/robot.d
+_clean :: JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage_clean
+
+JDLRobot_partialImage/$(MODE_DIR)/JDLRobot_partialImage_clean : 
+	$(TRACE_FLAG)if [ -d "JDLRobot_partialImage" ]; then cd "JDLRobot_partialImage"; rm -rf $(MODE_DIR); fi
+
+force : 
+
+DEP_FILES := JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Collector.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Display.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/DriveTrain.d \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/JoystickWrapper.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/LSM303_I2C.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Logger.d \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Math.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SharpIR.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Shooter.d \
+	 JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/SquareFinder.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/Vision.d JDLRobot_partialImage/$(MODE_DIR)/Objects/JDLRobot/robot.d
 -include $(DEP_FILES)
 
 
@@ -241,8 +248,15 @@ DEP_FILES := SimpleTemplate_partialImage/$(MODE_DIR)/Objects/SimpleTemplate/Coll
 
 -include *.makefile
 
-main_all : external_build $(PROJECT_TARGETS)
+JOBS?=1
+ifeq ($(JOBS),1)
+main_all : external_build  $(PROJECT_TARGETS)
 	@echo "make: built targets of `pwd`"
+else
+main_all : external_build 
+	@$(MAKE) -f $(MAKEFILE) --jobs $(JOBS) $(MFLAGS) $(PROJECT_TARGETS);\
+	echo "make: built targets of `pwd`"
+endif 
 
 # entry point for extending the build
 external_build ::
